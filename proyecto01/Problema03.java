@@ -1,5 +1,5 @@
 /*
- * Problem 01 Solution of http://ldc.usb.ve/~gpalma/ci5651em15/Proyecto1ci5651em15.pdf
+ * Problem 03 Solution of http://ldc.usb.ve/~gpalma/ci5651em15/Proyecto1ci5651em15.pdf
  * 
  * Authors:
  * 		Manuel Pacheco - 10-10524
@@ -14,8 +14,25 @@ public class Problema03 {
 
         // For each case
         for (Case ca : cases) {
-            // Problem Solution #!
 
+            int decided = Integer.MIN_VALUE;    // The time with no possible changes to its past
+            int tasks = 0;
+
+            // Sort intervals by ending time
+            Arrays.sort(ca.intervals);
+
+            // Test the acceptable intervals
+            for (Interval i : ca.intervals) {
+
+                // Greedy choice: accept interval if it does not collide with the last
+                if (i.start >= decided) {
+                    decided = i.end;
+                    tasks++;
+                }
+            }
+
+            // Generate output
+            System.out.println(tasks);
         }
     }
 }
@@ -60,12 +77,19 @@ class Case {
 }
 
 // Contains the given data for each case
-class Interval {
+class Interval implements Comparable<Interval> {
     public int start;
     public int end;
 
     public Interval(int start, int end) {
         this.start =  start;
         this.end = end;
+    }
+
+
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public int compareTo(Interval i) {
+        return this.end - i.end;
     }
 }
