@@ -8,7 +8,7 @@
 
 import java.util.*;
 
-public class Problema01 {
+public class P1 {
 	public static void main (String[] args) {
 		Case[] cases = Reader01.processInput();
 		

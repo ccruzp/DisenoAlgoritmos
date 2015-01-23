@@ -1,70 +1,6 @@
 import java.util.*; 
 
 public class P2 {
-    // public static void main(String[] args) {
-    // 	int nCases, nVertex, src, dst, numQueries, idEdge;
-    // 	int nComp = 1;
-    // 	String query;
-    // 	Vertex[] vertices;
-    // 	ArrayList<Edge> edges = new ArrayList<Edge>();
-    // 	Graph graph;
-    // 	Scanner scan = new Scanner(System.in);
-    // 	// Case[] cases;
-    // 	nCases = scan.nextInt();
-    // 	// cases = new Case[nCases];
-    // 	// for (int z = 0; z < nCases; z++) {
-    // 	    nVertex = scan.nextInt();
-    // 	    vertices = new Vertex[nVertex];
-    // 	    for (int i = 0; i < nVertex; i++) {
-    // 		vertices[i] = new Vertex(i+1);
-    // 	    }
-    // 	    for (int i = 1; i < nVertex; i++) {
-    // 		src = scan.nextInt();
-    // 		dst = scan.nextInt();
-    // 		edges.add(new Edge(src,dst));
-    // 		vertices[src-1].sons.add(vertices[dst-1]);
-    // 		vertices[dst-1].father = vertices[src-1];
-    // 	    }
-    // 	// for (int i = 0; i < nVertex; i++) {
-    // 	    vertices[0].numSons = Vertex.calcNumSons(vertices[0]);
-    // 	// Vertex.calcNumSons(vertices[0]);
-    // 	// }
-    // 	// for (int i = 0; i < nVertex; i++) {
-    // 	//     System.out.println("El padre del nodo #" + (i+1) + " es: " + vertices[i].father);
-    // 	//     for (int j = 0; j < vertices[i].sons.size(); j++) {
-    // 	// 	System.out.println(vertices[i].sons.get(j));
-    // 	//     }
-    // 	// }
-    // 	// cases[0] = new Case(nVertex, edges);
-    // 	// for (int i = 0; i < nVertex; i++) {
-    // 	//     System.out.println("El nodo #" + (i+1) + " tiene: " + vertices[i].numSons + " hijos");
-    // 	// }
-    // 	    graph = new Graph(vertices, edges);
-    // 	// System.out.println(graph);
-    // 	    numQueries = scan.nextInt();
-    // 	    for (int i = 0; i < numQueries; i++) {
-    // 		query = scan.next();
-    // 		if (query.equals("Q")) {
-    // 		    System.out.println("CALCULAR");
-    // 		    graph.calculateConnectedComponentSize();
-    // 		    System.out.println(graph.calculateDisconnectedOffices(nComp));
-    // 		} else {
-    // 		    nComp += 1;
-    // 		    idEdge = scan.nextInt();
-    // 		    System.out.println("REMOVER ARCO #" + idEdge);
-    // 		    graph.removeEdge(idEdge);
-    // 		}
-    // 	    }
-    // 	// }
-	    
-    // 	// scan.nextLine();
-    // 	// for (int i = 0; i < f; i++) {
-    // 	//     p = scan.nextLine();
-    // 	//     System.out.println(p);
-    // 	// }
-    // 	scan.close();
-    // 	System.out.println("¡Lo logré! ^*-*^");
-    // }
     public static void main(String[] args) {
 	Case ca;
 	Case[] cases = Reader01.processInput();
@@ -73,33 +9,16 @@ public class P2 {
 	    for (int i = 0; i < ca.queries.length; i++) {
 		
 		if (ca.queries[i].equals("Q")) {
-		    System.out.println("CALCULAR");
 		    ca.graph.calculateConnectedComponentSize();
     		    System.out.println(ca.graph.calculateDisconnectedOffices());
-
 		} else {
 		    int idEdge = Integer.parseInt(ca.queries[i].split(" ")[1]);
-		    System.out.println("REMOVER ARCO #" + idEdge);
 		    ca.graph.nComponents += 1;
 		    ca.graph.removeEdge(idEdge);
 		}
-		
 	    }
-    		// if (query.equals("Q")) {
-    		//     System.out.println("CALCULAR");
-    		//     graph.calculateConnectedComponentSize();
-    		//     System.out.println(graph.calculateDisconnectedOffices(nComp));
-    		// } else {
-    		//     nComp += 1;
-    		//     idEdge = scan.nextInt();
-    		//     System.out.println("REMOVER ARCO #" + idEdge);
-    		//     graph.removeEdge(idEdge);
-    		// }
-
+	    System.out.println();
 	}
-	
-    // public static calculate(Vertex vertex) {
-    // }
     }
 }
 
