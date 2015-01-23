@@ -1,17 +1,30 @@
+/*
+ * Problem 02 Solution of http://ldc.usb.ve/~gpalma/ci5651em15/Proyecto1ci5651em15.pdf
+ * 
+ * Authors:
+ * 		Manuel Pacheco - 10-10524
+ * 		Carlos Cruz -  10-10168
+ */
+
 import java.util.*; 
 
 public class P2 {
     public static void main(String[] args) {
 	Case ca;
+	// Reads input
 	Case[] cases = Reader01.processInput();
+	// For each case
 	for (int c = 0; c < cases.length; c++) {
 	    ca = cases[c];
+	    // For each query in the graph
 	    for (int i = 0; i < ca.queries.length; i++) {
-		
+		// if letter Q, calculates the amount of unconnected vertices
 		if (ca.queries[i].equals("Q")) {
 		    ca.graph.calculateConnectedComponentSize();
     		    System.out.println(ca.graph.calculateDisconnectedOffices());
 		} else {
+		    // if letter R, then removes the edge and recalculates the 
+		    // cardinality of each unconnected component
 		    int idEdge = Integer.parseInt(ca.queries[i].split(" ")[1]);
 		    ca.graph.nComponents += 1;
 		    ca.graph.removeEdge(idEdge);
@@ -33,6 +46,7 @@ class Case {
     }
 }
 
+// Opens, reads and closes the files and makes the cases array.
 class Reader01 {    
     public static Case[] processInput() {
 	int nCases, nVertex, src, dst, numQueries, idEdge;
@@ -48,9 +62,11 @@ class Reader01 {
 	for (int i = 0; i < nCases; i++) {
 	    nVertex = scan.nextInt();
 	    vertices = new Vertex[nVertex];
+	    // Creating the vertices
 	    for (int j = 0; j < nVertex; j++) {
 		vertices[j] = new Vertex(j+1);
 	    }
+	    // Creating the edges
 	    for (int j = 1; j < nVertex; j++) {
 		src = scan.nextInt();
 		dst = scan.nextInt();
@@ -58,10 +74,12 @@ class Reader01 {
 		vertices[src-1].sons.add(vertices[dst-1]);
 		vertices[dst-1].father = vertices[src-1];
 	    }
+	    // Calculates the cardinality of the connected component
 	    vertices[0].numSons = Vertex.calcNumSons(vertices[0]);
 	    numQueries = scan.nextInt();
 	    scan.nextLine();
 	    queries = new String[numQueries];
+	    // Reads the queries
     	    for (int j = 0; j < numQueries; j++) {
     		queries[j] = scan.nextLine();
     	    }
@@ -72,7 +90,8 @@ class Reader01 {
     }
 }
 
-
+// Graph that contains the array of vertices, the arraylist of edges and an
+// integer for the amount of connected components of the graph
 class Graph {
     public Vertex[] vertices;
     public ArrayList<Edge> edges;
@@ -94,7 +113,8 @@ class Graph {
 	}
 	return graph;
     }
-
+    
+    // Removes edge from the graph
     public void removeEdge(int idEdge) {
 	int i = 0;
 	Edge edge;
@@ -112,6 +132,7 @@ class Graph {
 	vertex.father = vertex;
     }
 
+    // Calculates the size of the connected component
     public void calculateConnectedComponentSize() {
 	int size = vertices.length;
 	Vertex vertex;
@@ -123,7 +144,8 @@ class Graph {
 	    }
 	}	
     }
-
+    
+    // Calculates how many offices (vertices) are disconnected from each other
     public int calculateDisconnectedOffices() {
 	int i = 0;
 	int j = 0;
@@ -150,6 +172,8 @@ class Graph {
     }
 }
 
+// Class vertex that keepes the id and color of the vertex and the amount of
+// children it has plus itself
 class Vertex {
     public int id, color, numSons;
     public Vertex father;
@@ -166,6 +190,7 @@ class Vertex {
 	return "Nodo #" + this.id;
     }
 
+    // Calculates how many children has a vertex
     public static int calcNumSons(Vertex vertex) {
 	int size = vertex.sons.size();
 	Vertex v;
@@ -180,6 +205,7 @@ class Vertex {
     }
 }
 
+// Class edge that keeps the edges of the graph
 class Edge {
     public int id, src, dst;
     
