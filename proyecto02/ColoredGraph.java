@@ -40,26 +40,24 @@ public class ColoredGraph extends SimpleGraph {
         // Main Cycle
         while (true) {
 
-            // TODO EXPLANATION
+            // Expanding the actual partial solution
             if (!back) {
 
                 // TODO Determine posible colors for x[k]
 
-            // TODO PENDING EXPLANATION
+            // We are returning so we must eliminate this group of partial solutions
             } else {
                 // TODO Remove actual color from posible colors
                 // TODO Remove label if it exists
             }
 
-            // If a color assignment is possible
+            // If color assignment is possible
             if (true) { // TODO change for actual condition
                 // Color actual vertex with minimal color possible
                 x[k] = 100; // TODO change for actual color
 
                 // Increment actual colors used if that is the case TODO Correctness
-                if (100 > l) {
-                    ++l;
-                }
+                if (100 > l) ++l;
 
                 // #! TODO Where u[k] assignment goes?
 
@@ -68,14 +66,18 @@ public class ColoredGraph extends SimpleGraph {
 
                 // All vertices have been colored, this is a new BETTER solution
                 if (k > getNVertex()) {
+
+                    // This new BETTER solution is the actual solution counter
                     q = l;
 
                     // If the best solution is the same as the
                     // initial clique size, there is no better solution to search
                     if (q == w) break;
 
-                    // Remove the labels from the first q-colored vertex
-                    // up to the end TODO Non-q-colored too? Seems yes
+                    // Set k to the minimal rank among the vertices with the last color
+                    // TODO PENDING
+
+                    // Remove all labels from vertices higher or equal than k
                     // TODO PENDING
 
                     // Go back to check other possible better solutions
@@ -90,7 +92,8 @@ public class ColoredGraph extends SimpleGraph {
                 back = true;
             }
 
-            // We are going backwards (either recently found solution or no possible following solution)
+            // We are going backwards (either recently found solution
+            // or no possible following coloring solution)
             if (back) {
                 // Call the label procedure on actual vertex
                 label(k);
