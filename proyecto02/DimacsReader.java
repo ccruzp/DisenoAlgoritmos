@@ -1,5 +1,5 @@
 /**
- * Implements a DIMACS format coloring graph
+ * Implements a DIMACS format graph reader
  */
 import java.io.File;
 import java.io.FileNotFoundException;
