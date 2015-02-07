@@ -1,5 +1,6 @@
 /**
- * Implements a simple undirected graph using half adjacency matrix
+ * Implements a simple undirected graph using
+ * complete adjacency lists for each vertex
  */
 
 import java.util.ArrayList;
