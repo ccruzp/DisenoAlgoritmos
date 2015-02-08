@@ -1,12 +1,15 @@
+import java.util.List;
+import java.util.TreeSet;
+
 /**
  * Implements a subclass of SimpleGraph capable
  * of solving the chromatic number problem.
  */
 public class ColoredGraph extends SimpleGraph {
 
-    int x[];        // Colors chosen for each vertex
-    int labels[];   // Brelaz labels
-
+    int x[];         //Colors chosen for each vertex
+    TreeSet<Integer> labels;   // Brelaz labels
+    
     int k;          // Actual coloring vertex
     int w;          // Dimension of initial clique
     int q;          // Best solution of the problem
@@ -18,7 +21,7 @@ public class ColoredGraph extends SimpleGraph {
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
         super(nVertex, edges);
         x = new int[nVertex+1];
-        labels = new int[nVertex+1];
+        labels = new TreeSet<Integer>();
         u = new int[nVertex+1];
 
         w = 0;
@@ -115,7 +118,31 @@ public class ColoredGraph extends SimpleGraph {
         u[1] = 1;   // Colors of partial solution up to 1 is 1
     }
 
-    private void label(int k) {
-        // TODO Implementation pending
-    }
+    
+	private void label(int k) {
+		
+		List <Integer> adjacents = this.getNeighbors(k);
+		int[] colores = new int[l];
+		
+		for (Integer i : adjacents) {
+			// Checks for nodes with smaller rank
+			if (i < k) {		
+				int color = this.x[i];
+				// Adds a color if it hasn't been added OR its new node has a lower rank
+				if (colores[color] == 0 || colores[color] > i) {
+					colores[color] = i;
+				}
+					
+			} 
+		}
+		// Adds the final list to the label tree
+		for (int i = 0; i <= l; i++) {
+			if (colores[i] != 0) {
+				labels.add(i);
+			}
+		}	
+	}
+
+
 }
+
