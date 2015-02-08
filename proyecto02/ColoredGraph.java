@@ -2,6 +2,11 @@
  * Implements a subclass of SimpleGraph capable
  * of solving the chromatic number problem.
  */
+
+import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.List;
+
 public class ColoredGraph extends SimpleGraph {
 
     int x[];        // Colors chosen for each vertex
@@ -14,6 +19,7 @@ public class ColoredGraph extends SimpleGraph {
 
     int l;          // Numbers of colors used on the actual partial solution
     int u[];        // Numbers of colors used on the partial solutions
+    TreeSet U;      // Set that contains the colors available for a vertex
 
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
         super(nVertex, edges);
@@ -42,8 +48,7 @@ public class ColoredGraph extends SimpleGraph {
 
             // Expanding the actual partial solution
             if (!back) {
-
-                // TODO Determine posible colors for x[k]
+                U = determineU(k); // TODO Determine posible colors for x[k]
 
             // We are returning so we must eliminate this group of partial solutions
             } else {
@@ -118,4 +123,29 @@ public class ColoredGraph extends SimpleGraph {
     private void label(int k) {
         // TODO Implementation pending
     }
+
+    public TreeSet<Integer> determineU(int k) {
+	TreeSet<Integer> U = new TreeSet<Integer>();
+	int lastColor = Math.min(u[k]+1, q);
+	// System.out.println("k: " + k);
+	// System.out.println("u[k]: " + (u[k] +1));
+	// System.out.println("Q: " + (q));
+	// System.out.println("LASTCOLOR: " + lastColor);
+	for (int i = 1; i <= lastColor; i++) {
+	    U.add(i);
+	}
+	// System.out.println("PRE: " + U);
+	List<Integer> adjacent = this.getNeighbors(k);
+	// System.out.println("LISTA: " + adjacent);
+	for (int i : adjacent) {
+	    if (i < k) U.remove(x[i]);
+	}
+	return U;
+    }
+
+    public static void main(String[] args) {
+	System.out.println("Ola bale");
+	System.out.println("Probando min: " + Math.min(4, 3));
+    }
+	
 }
