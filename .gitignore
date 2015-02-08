@@ -1,0 +1,55 @@
+# WINDOWS IGNORES
+*.txt
+Desktop.ini
+$RECYCLE.BIN/
+
+# JAVA IGNORES
+
+# Java classes
+*.class
+
+# Package Files
+*.jar
+*.war
+*.ear
+
+# ECLIPSE IGNORES
+
+# Eclipse Core
+.project
+
+*.pydevproject
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# INTELLIJ IGNORES
+
+*.iml
+.idea/
+
+# File-based project format:
+*.ipr
+*.iws
+
+# IntelliJ
+out/
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
