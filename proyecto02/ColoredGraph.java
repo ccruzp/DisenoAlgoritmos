@@ -4,14 +4,13 @@
  */
 
 import java.util.TreeSet;
-import java.util.Iterator;
 import java.util.List;
 
 public class ColoredGraph extends SimpleGraph {
 
     int x[];         //Colors chosen for each vertex
     TreeSet<Integer> labels;   // Brelaz labels
-    
+
     int k;          // Actual coloring vertex
     int w;          // Dimension of initial clique
     int q;          // Best solution of the problem
@@ -111,7 +110,7 @@ public class ColoredGraph extends SimpleGraph {
             }
         }
     }
-    
+
     private void solveInitialClique() {
         // TODO Get a better clique using Dsatur algorithm or equivalent
         w = 1;      // Clique size is 1
@@ -119,53 +118,46 @@ public class ColoredGraph extends SimpleGraph {
         l = 1;      // Actual colors is 1
         u[1] = 1;   // Colors of partial solution up to 1 is 1
     }
-    
+
     private void label(int k) {
-	
-	List <Integer> adjacents = this.getNeighbors(k);
-	int[] colores = new int[l];
-	
-	for (Integer i : adjacents) {
-	    // Checks for nodes with smaller rank
-	    if (i < k) {		
-		int color = this.x[i];
-		// Adds a color if it hasn't been added OR its new node has a lower rank
-		if (colores[color] == 0 || colores[color] > i) {
-		    colores[color] = i;
-		}
-		
-	    } 
-	}
-	// Adds the final list to the label tree
-	for (int i = 0; i <= l; i++) {
-	    if (colores[i] != 0) {
-		labels.add(i);
-	    }
-	}	
-    }
-    
-    public TreeSet<Integer> determineU(int k) {
-	TreeSet<Integer> U = new TreeSet<Integer>();
-	int lastColor = Math.min(u[k]+1, q);
-	// System.out.println("k: " + k);
-	// System.out.println("u[k]: " + (u[k] +1));
-	// System.out.println("Q: " + (q));
-	// System.out.println("LASTCOLOR: " + lastColor);
-	for (int i = 1; i <= lastColor; i++) {
-	    U.add(i);
-	}
-	// System.out.println("PRE: " + U);
-	List<Integer> adjacent = this.getNeighbors(k);
-	// System.out.println("LISTA: " + adjacent);
-	for (int i : adjacent) {
-	    if (i < k) U.remove(x[i]);
-	}
-	return U;
+        List<Integer> adjacent = this.getNeighbors(k);
+        int[] nodesByColor = new int[l];
+
+        // For each neighbor (rule ii)
+        for (Integer i : adjacent) {
+            // Filter by smaller rank (rule i)
+            if (i < k) {
+                // Add only minimal rank per color
+                int color = this.x[i];
+                if (nodesByColor[color] == 0 || nodesByColor[color] > i) {
+                    nodesByColor[color] = i;
+                }
+            }
+        }
+
+        // Adds the final list to the label tree
+        for (int i = 0; i <= l; i++) {
+            if (nodesByColor[i] != 0) {
+                labels.add(i);
+            }
+        }
     }
 
-    public static void main(String[] args) {
-	System.out.println("Ola bale");
-	System.out.println("Probando min: " + Math.min(4, 3));
+    public TreeSet<Integer> determineU(int k) {
+        TreeSet<Integer> U = new TreeSet<Integer>();
+        int lastColor = Math.min(u[k] + 1, q); // TODO PENDING FOR CORRECTNESS
+        List<Integer> adjacent = this.getNeighbors(k);
+
+        // Add all colors in bound
+        for (int i=1; i<=lastColor; i++) {
+            U.add(i);
+        }
+
+        // Remove invalid colors
+        for (int i : adjacent) {
+            if (i < k) U.remove(x[i]);
+        }
+
+        return U;
     }
 }
-
