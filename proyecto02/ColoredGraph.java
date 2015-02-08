@@ -19,7 +19,7 @@ public class ColoredGraph extends SimpleGraph {
 
     int l;          // Numbers of colors used on the actual partial solution
     int u[];        // Numbers of colors used on the partial solutions
-    TreeSet U;      // Set that contains the colors available for a vertex
+    TreeSet<Integer> U;      // Set that contains the colors available for a vertex
 
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
         super(nVertex, edges);
@@ -48,18 +48,20 @@ public class ColoredGraph extends SimpleGraph {
 
             // Expanding the actual partial solution
             if (!back) {
-                U = determineU(k); // TODO Determine posible colors for x[k]
+		u[k] = l; // Not sure if it's like this.
+                U = determineU(k); // Set of posible colors for vertex k
 
             // We are returning so we must eliminate this group of partial solutions
             } else {
-                // TODO Remove actual color from posible colors
+                U = determineU(k);
+		U.remove(x[k]);// Removes actual color from the set of possible colors (I think it's like this).
                 // TODO Remove label if it exists
             }
 
             // If color assignment is possible
-            if (true) { // TODO change for actual condition
+            if (!U.isEmpty()) {
                 // Color actual vertex with minimal color possible
-                x[k] = 100; // TODO change for actual color
+                x[k] = U.pollFirst(); // TODO change for actual color
 
                 // Increment actual colors used if that is the case TODO Correctness
                 if (100 > l) ++l;
