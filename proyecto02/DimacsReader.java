@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class DimacsReader {
-    public static SimpleGraph processInput(String inputFile) {
+    public static ColoredGraph processInput(String inputFile) {
 
         // Scanner initialization
         Scanner scanner = null;
@@ -58,6 +58,6 @@ public class DimacsReader {
                 edgeIter++;
             }
         }
-        return new SimpleGraph(nVertex, edges);
+        return new ColoredGraph(nVertex, edges);
     }
 }

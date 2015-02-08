@@ -14,9 +14,9 @@ class DimacsReaderTest {
         }
 
         // Read graph
-        SimpleGraph graph = DimacsReader.processInput(args[0]);
+        ColoredGraph graph = DimacsReader.processInput(args[0]);
 
-        for (int i=0; i<graph.getNVertex(); i++) {
+        for (int i=0; i<=graph.getNVertex(); i++) {
             System.out.println("Los vecinos de " + i + " son:");
             List<Integer> neighbors = graph.getNeighbors(i);
 
