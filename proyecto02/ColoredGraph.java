@@ -3,67 +3,75 @@
  * of solving the chromatic number problem.
  */
 
-import java.util.TreeSet;
-import java.util.List;
+import java.util.*;
 
 public class ColoredGraph extends SimpleGraph {
 
-    int x[];         //Colors chosen for each vertex
-    TreeSet<Integer> labels;   // Brelaz labels
+    // Graph solution variables
+    int x[];                        // Colors chosen for each vertex
+    int q;                          // Best solution of the problem
 
-    int k;          // Actual coloring vertex
-    int w;          // Dimension of initial clique
-    int q;          // Best solution of the problem
-    boolean back;   // Control variable (to detect backtracking? #!)
+    // Solution tool variables
+    int k;                          // Actual coloring vertex
+    boolean back;                   // Flag to indicate backtracking
+    int l;                          // Numbers of colors used on the actual partial solution
+    int u[];                        // Numbers of colors used on the partial solutions (history)
 
-    int l;          // Numbers of colors used on the actual partial solution
-    int u[];        // Numbers of colors used on the partial solutions
-    TreeSet U;      // Set that contains the colors available for a vertex
+    SortedSet<Integer> labels;                // Brelaz labels
+    Map<Integer,SortedSet<Integer>> U;   // Sets containing the colors available for each vertex
+
+    // Clique variables
+    int w;                          // Dimension of initial clique
 
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
         super(nVertex, edges);
         x = new int[nVertex+1];
-        labels = new TreeSet<Integer>();
+        q = getNVertex();
+
         u = new int[nVertex+1];
-
-        w = 0;
-        q = getNVertex(); // TODO PENDING FOR CORRECTNESS
-
+        // TreeSet is chosen for problem efficiency (ordered set with O(log n) time operations)
+        labels = new TreeSet<Integer>();
+        // HashMap is chosen for problem efficiency (upper-bound entry and fast random access)
+        U = new HashMap<Integer, SortedSet<Integer>>(nVertex+1);
     }
 
     public void solveColoring() {
 
-        // Initial clique solving
+        // Initial clique solving (and labeling)
         solveInitialClique();
 
         // Initialization
-        back = false;
         k = w + 1;
-        // #! LABEL CLIQUE VERTICES
-
+        back = false;
+        l = w;
+        for (int i=1; i<k; i++) u[i]=i;
 
         // Main Cycle
         while (true) {
 
             // Expanding the actual partial solution
             if (!back) {
-                U = determineU(k); // TODO Determine posible colors for x[k]
+                // Determine posible colors for x[k]
+                U.put(k,determineU(k));
 
             // We are returning so we must eliminate this group of partial solutions
             } else {
-                // TODO Remove actual color from posible colors
-                // TODO Remove label if it exists
+                // Remove actual color from posible colors
+                U.get(k).remove(x[k]);
+                // Remove label on actual element if it exists
+                labels.remove(k);
             }
 
             // If color assignment is possible
-            if (true) { // TODO change for actual condition
+            if (!U.get(k).isEmpty()) {
                 // Color actual vertex with minimal color possible
-                x[k] = 100; // TODO change for actual color
+                x[k] = U.get(k).first();
 
                 // Increment actual colors used if that is the case TODO Correctness
-                if (100 > l) ++l;
+                if (x[k] > l) ++l;
 
-                // #! TODO Where u[k] assignment goes?
+                // Save colors used in history
+                u[k] = l;   // TODO Correctness
 
                 // Go to next vertex
                 k++;
@@ -79,10 +87,15 @@ public class ColoredGraph extends SimpleGraph {
                     if (q == w) break;
 
                     // Set k to the minimal rank among the vertices with the last color
-                    // TODO PENDING
+                    for (int i=1; i<=getNVertex(); i++) {
+                        if (x[i] == l) {
+                            k = i;
+                            break;
+                        }
+                    }
 
                     // Remove all labels from vertices higher or equal than k
-                    // TODO PENDING
+                    labels = new TreeSet<Integer>(labels.headSet(k));
 
                     // Go back to check other possible better solutions
                     back = true;
@@ -103,7 +116,10 @@ public class ColoredGraph extends SimpleGraph {
                 label(k);
 
                 // Go to highest of labeled vertices
-                // TODO PENDING
+                k = labels.last();
+
+                // Get colors used with history
+                l = u[k];   // TODO Correctness
 
                 // If it is part of the clique, there is no point in still searching solutions
                 if (k <= w) break;
@@ -115,16 +131,15 @@ public class ColoredGraph extends SimpleGraph {
         // TODO Get a better clique using Dsatur algorithm or equivalent
         w = 1;      // Clique size is 1
         x[1] = 1;   // Color of 1st element is 1
-        l = 1;      // Actual colors is 1
-        u[1] = 1;   // Colors of partial solution up to 1 is 1
+        labels.add(1);
     }
 
     private void label(int k) {
         List<Integer> adjacent = this.getNeighbors(k);
-        int[] nodesByColor = new int[l];
+        int[] nodesByColor = new int[l+1];
 
         // For each neighbor (rule ii)
-        for (Integer i : adjacent) {
+        for (Integer i: adjacent) {
             // Filter by smaller rank (rule i)
             if (i < k) {
                 // Add only minimal rank per color
@@ -136,19 +151,24 @@ public class ColoredGraph extends SimpleGraph {
         }
 
         // Adds the final list to the label tree
-        for (int i = 0; i <= l; i++) {
+        for (int i=1; i<=l; i++) {
             if (nodesByColor[i] != 0) {
                 labels.add(i);
             }
         }
     }
 
-    public TreeSet<Integer> determineU(int k) {
+    private SortedSet<Integer> determineU(int k) {
+        // Reasons for TreeSet usage explained on constructor
         TreeSet<Integer> U = new TreeSet<Integer>();
-        int lastColor = Math.min(u[k] + 1, q); // TODO PENDING FOR CORRECTNESS
         List<Integer> adjacent = this.getNeighbors(k);
 
-        // Add all colors in bound
+        // Upper bound is the min between
+        // numbers of colors used in the last partial solution plus a new one
+        // and the best solution so far
+        int lastColor = Math.min(u[k - 1] + 1, q); // TODO PENDING FOR CORRECTNESS
+
+        // Add all colors inside bounds
         for (int i=1; i<=lastColor; i++) {
             U.add(i);
         }
@@ -159,5 +179,13 @@ public class ColoredGraph extends SimpleGraph {
         }
 
         return U;
+    }
+
+    public int getChromaticNumber() {
+        return q;
+    }
+
+    public int[] getChromaticSolution() {
+        return x;
     }
 }
