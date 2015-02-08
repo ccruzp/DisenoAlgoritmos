@@ -153,7 +153,7 @@ public class ColoredGraph extends SimpleGraph {
         // Adds the final list to the label tree
         for (int i=1; i<=l; i++) {
             if (nodesByColor[i] != 0) {
-                labels.add(i);
+                labels.add(nodesByColor[i]);
             }
         }
     }
