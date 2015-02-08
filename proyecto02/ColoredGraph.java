@@ -64,7 +64,7 @@ public class ColoredGraph extends SimpleGraph {
                 x[k] = U.pollFirst(); // TODO change for actual color
 
                 // Increment actual colors used if that is the case TODO Correctness
-                if (100 > l) ++l;
+                if (x[k] > l) ++l;
 
                 // #! TODO Where u[k] assignment goes?
 
