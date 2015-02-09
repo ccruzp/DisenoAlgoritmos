@@ -17,7 +17,7 @@ public class ColoredGraph extends SimpleGraph {
     int l;                          // Numbers of colors used on the actual partial solution
     int u[];                        // Numbers of colors used on the partial solutions (history)
 
-    SortedSet<Integer> labels;                // Brelaz labels
+    SortedSet<Integer> labels;           // Brelaz labels
     Map<Integer,SortedSet<Integer>> U;   // Sets containing the colors available for each vertex
 
     // Clique variables
@@ -86,9 +86,15 @@ public class ColoredGraph extends SimpleGraph {
                     // initial clique size, there is no better solution to search
                     if (q == w) break;
 
+                    // #! EXPERIMENTAL
+                    // Delete the color option q from all the nodes
+                    for (Integer i: U.keySet()) {
+                        U.get(i).remove(q);
+                    }
+
                     // Set k to the minimal rank among the vertices with the last color
                     for (int i=1; i<=getNVertex(); i++) {
-                        if (x[i] == l) {
+                        if (x[i] == q) {
                             k = i;
                             break;
                         }
@@ -122,7 +128,9 @@ public class ColoredGraph extends SimpleGraph {
                 l = u[k];   // TODO Correctness
 
                 // If it is part of the clique, there is no point in still searching solutions
-                if (k <= w) break;
+                if (k <= w) {
+                    break;
+                }
             }
         }
     }
@@ -142,7 +150,7 @@ public class ColoredGraph extends SimpleGraph {
         for (Integer i: adjacent) {
             // Filter by smaller rank (rule i)
             if (i < k) {
-                // Add only minimal rank per color
+                // Add only minimal rank per color (rule iii)
                 int color = this.x[i];
                 if (nodesByColor[color] == 0 || nodesByColor[color] > i) {
                     nodesByColor[color] = i;
@@ -159,6 +167,7 @@ public class ColoredGraph extends SimpleGraph {
     }
 
     private SortedSet<Integer> determineU(int k) {
+
         // Reasons for TreeSet usage explained on constructor
         TreeSet<Integer> U = new TreeSet<Integer>();
         List<Integer> adjacent = this.getNeighbors(k);
@@ -166,18 +175,22 @@ public class ColoredGraph extends SimpleGraph {
         // Upper bound is the min between
         // numbers of colors used in the last partial solution plus a new one
         // and the best solution so far
-        int lastColor = Math.min(u[k - 1] + 1, q); // TODO PENDING FOR CORRECTNESS
+        int lastColor = Math.min(u[k - 1] + 1, q-1); // TODO PENDING FOR CORRECTNESS
 
-        // Add all colors inside bounds
+        // Get the set of forbidden colors
+        Set<Integer> forbidden = new HashSet<Integer>(q);
+        for (Integer i: adjacent) {
+            if (i<k) {
+                forbidden.add(x[i]);
+            }
+        }
+
+        // Add all not the forbidden colors inside bounds
         for (int i=1; i<=lastColor; i++) {
-            U.add(i);
+            if (!forbidden.contains(i)) {
+                U.add(i);
+            }
         }
-
-        // Remove invalid colors
-        for (int i : adjacent) {
-            if (i < k) U.remove(x[i]);
-        }
-
         return U;
     }
 
@@ -185,7 +198,4 @@ public class ColoredGraph extends SimpleGraph {
         return q;
     }
 
-    public int[] getChromaticSolution() {
-        return x;
-    }
 }
