@@ -24,7 +24,8 @@ public class ColoredGraph extends SimpleGraph {
     int w;                          // Dimension of initial clique
 
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
-        super(nVertex, edges);
+	super(nVertex, edges);
+        System.out.print(nVertex + " ");
         x = new int[nVertex+1];
         q = getNVertex();
 
@@ -138,8 +139,16 @@ public class ColoredGraph extends SimpleGraph {
     private void solveInitialClique() {
         // TODO Get a better clique using Dsatur algorithm or equivalent
         w = 1;      // Clique size is 1
-        x[1] = 1;   // Color of 1st element is 1
-        labels.add(1);
+        // x[1] = 1;   // Color of 1st element is 1
+        // labels.add(1);
+	int color = 1;
+	while (w == color) {
+	    x[w] = color;
+	    u[w] = 
+	    w++;
+	    U.put(w,determineU(w));
+	    color = U.get(w).first();
+	}
     }
 
     private void label(int k) {
