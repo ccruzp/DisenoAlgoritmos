@@ -167,6 +167,7 @@ public class ColoredGraph extends SimpleGraph {
     }
 
     private SortedSet<Integer> determineU(int k) {
+
         // Reasons for TreeSet usage explained on constructor
         TreeSet<Integer> U = new TreeSet<Integer>();
         List<Integer> adjacent = this.getNeighbors(k);
@@ -176,16 +177,20 @@ public class ColoredGraph extends SimpleGraph {
         // and the best solution so far
         int lastColor = Math.min(u[k - 1] + 1, q-1); // TODO PENDING FOR CORRECTNESS
 
-        // Add all colors inside bounds
+        // Get the set of forbidden colors
+        Set<Integer> forbidden = new HashSet<Integer>(q);
+        for (Integer i: adjacent) {
+            if (i<k) {
+                forbidden.add(x[i]);
+            }
+        }
+
+        // Add all not the forbidden colors inside bounds
         for (int i=1; i<=lastColor; i++) {
-            U.add(i);
+            if (!forbidden.contains(i)) {
+                U.add(i);
+            }
         }
-
-        // Remove invalid colors (those from earlier neighbors)
-        for (int i : adjacent) {
-            if (i < k) U.remove(x[i]);
-        }
-
         return U;
     }
 
@@ -193,7 +198,4 @@ public class ColoredGraph extends SimpleGraph {
         return q;
     }
 
-    public int[] getChromaticSolution() {
-        return x;
-    }
 }

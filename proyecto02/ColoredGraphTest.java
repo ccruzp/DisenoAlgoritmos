@@ -4,6 +4,9 @@
 public class ColoredGraphTest {
 
     public static void main(String[] args) {
+
+        long startTime = System.currentTimeMillis();
+
         // Verify arguments
         if (args.length != 1) {
             System.out.println("Falta el argumento archivo.");
@@ -19,13 +22,8 @@ public class ColoredGraphTest {
         // Return Chromatic Number
         System.out.println("The chromatic number is: " + graph.getChromaticNumber());
 
-        // Return Array Solution
-        int[] solution = graph.getChromaticSolution();
-        System.out.println("The array solution is: ");
-        System.out.print("[" + solution[1]);
-        for (int i=2; i<solution.length; i++) {
-            System.out.print("," + solution[i]);
-        }
-        System.out.println("]");
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("TIME: " + ((double) totalTime)/1000 + " secs.");
     }
 }
