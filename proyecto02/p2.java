@@ -18,6 +18,6 @@ public class p2 {
         graph.solveColoring();
 
         // Return Chromatic Number
-        System.out.println(graph.getChromaticNumber());
+        System.out.println(graph.getNVertex() + " " + graph.getChromaticNumber());
     }
 }

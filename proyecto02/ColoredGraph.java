@@ -25,7 +25,6 @@ public class ColoredGraph extends SimpleGraph {
 
     public ColoredGraph(int nVertex, OrderedEdge edges[]) {
 	super(nVertex, edges);
-        System.out.print(nVertex + " ");
         x = new int[nVertex+1];
         q = getNVertex();
 
@@ -42,9 +41,9 @@ public class ColoredGraph extends SimpleGraph {
         solveInitialClique();
 
         // Initialization
-        k = w + 1;
+        k = w;
         back = false;
-        l = w;
+        l = w - 1;
         for (int i=1; i<k; i++) u[i]=i;
 
         // Main Cycle
