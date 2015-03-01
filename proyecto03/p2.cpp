@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -70,6 +71,8 @@ int main() {
         int **solutions = new int*[columns];
         for (uint i=0; i<columns; i++) {
             solutions[i] = new int[masks];
+            // Initialize values
+            fill(solutions[i],solutions[i]+columns,-1);
         }
 
         // Get optimal answer
