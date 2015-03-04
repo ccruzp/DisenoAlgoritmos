@@ -1,5 +1,3 @@
-package d.a.last;
-
 import java.util.*;
 
 //Main
@@ -12,7 +10,7 @@ public class P4 {
 	
 	Case[] c = Case.lectura();
 	for (int i = 0; i < c.length; i++) {
-	    System.out.println(c[i] + "\nOptimo: " + c[i].maxWoods(0));
+	    System.out.println(c[i] + "\nOptimo: " + c[i].maxWoods(0) + "\n");
 	}
     }
 }
@@ -42,10 +40,11 @@ class Case {
 
 	//iterate over each test case
 	for (int i = 0; i < nCases; i++) {
+	    matrix = new ArrayList<String>();
 	    nRows = scanner.nextInt();
 	    nCols = scanner.nextInt();
-		opts = new int[nRows*nCols];
-		Arrays.fill(opts, -1);
+	    opts = new int[nRows*nCols];
+	    Arrays.fill(opts, -1);
 	    scanner.nextLine();
 		
 		//iterates over each matrix column
@@ -106,7 +105,8 @@ class Case {
 		matriz.add(line[i]);
 	    }
 	} else {
-	    for (int i = line.length-1; i > 0; i--) {
+	    // for (int i = line.length-1; i > 0; i--) {
+	    for (int i = 1; i < line.length; i++) {
 		matriz.add(line[i]);
 	    }
 	}
