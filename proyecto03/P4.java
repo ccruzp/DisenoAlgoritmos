@@ -3,9 +3,15 @@ import java.util.*;
 //Main
 public class P4 {
     public static void main(String[] args) {	
-	Case[] c = Case.lectura();
-	for (int i = 0; i < c.length; i++) {
-	    System.out.println(c[i] + "\nOptimo: " + c[i].maxWoods(0) + "\n");
+	try {
+	    Case[] c = Case.lectura();
+	    for (int i = 0; i < c.length; i++) {
+		// System.out.println(c[i] + "\nOptimo: " + c[i].maxWoods(0) + "\n");
+		System.out.println(c[i].maxWoods(0));
+		// System.out.println();
+	    }
+	} catch (Exception e) {
+	    return;
 	}
     }
 }
@@ -44,7 +50,7 @@ class Case {
 	    
 	    //iterates over each matrix column
 	    for (int j = 0; j < nRows; j++) {
-	    	scanner.nextLine();		
+	    	scanner.nextLine();	       
 		matrix = Case.readLine(scanner.nextLine().split(""), matrix, j);
 	    }
 	    
@@ -97,17 +103,18 @@ class Case {
     //Converts each matrix line into a usable string
     public static ArrayList<String> readLine(String[] line, ArrayList<String> matriz, int num) {
 	if (num % 2 == 0) {
-	    for (int i = 1; i < line.length; i++) {
+	    for (int i = 0; i < line.length; i++) {
 		matriz.add(line[i]);
 	    }
 	} else {
-	    for (int i = line.length-1; i > 0; i--) {
+	    for (int i = line.length-1; i >= 0; i--) {
 		matriz.add(line[i]);
 	    }
 	}
 	return matriz;
     }
     
+        
     public String toString() {
 	String res = "Rows: " + nRows + "\nCols: " + nCols + "\nMatrix: ";
 	for (int i = 0; i < matrix.length; i++) {
