@@ -1,10 +1,10 @@
 import java.util.*;
 
-public class P3 {
+public class p3 {
     public static void main(String[] args) {
 	Case [] c = Reader.processInput();
 	for (int i = 0; i < c.length; i++) {
-	    System.out.println("Sin colorear: " + c[i].blackOrWhite(1, 0, 0));
+	    System.out.println(c[i].blackOrWhite(1, 0, 0));
 	}
     }
 }
@@ -19,6 +19,7 @@ class Reader {
 	int[] seq;
 	Scanner scanner = new Scanner(System.in);
 	int nElem = scanner.nextInt();
+	Case ca;
 	ArrayList<Case> c = new ArrayList<Case>();
 	while(nElem != -1) {
 	    seq = new int[nElem+1];
@@ -82,4 +83,3 @@ class Case {
 
     }
 }
-	    
